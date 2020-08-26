@@ -6,32 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CWBOpenData.Models;
+using CWBOpenData.Services;
 
 namespace CWBOpenData.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ICWBAPIService _CWBAPIService;
+        public HomeController(ICWBAPIService cwbAPIService)
         {
-            _logger = logger;
+            _CWBAPIService = cwbAPIService;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var result = _CWBAPIService.GetWeatherForecastTo36Hour();
+            return Json(result);
         }
     }
 }

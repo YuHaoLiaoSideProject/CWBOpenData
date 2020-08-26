@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CWBOpenData.ConfigModels;
+using CWBOpenData.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,7 +25,15 @@ namespace CWBOpenData
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.Configure<ConnectionStringConfig>(Configuration.GetSection("ConnectionStrings"));
+
+            services.AddMvc();
+
+            services.AddMvcCore();
+
+            services.AddScoped<ICWBAPIService, CWBAPIService>();
+            
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,7 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CWBOpenData.Helpers
+namespace CWBOpenData.Helpers.APIRequest
 {
     public class APIRequestHelper
     {
@@ -276,7 +276,7 @@ namespace CWBOpenData.Helpers
                     };
                 }
                 
-                T convert = JsonSerializer.Deserialize<T>(responseText);
+                T convert = ConvertToModel<T>(responseText);
 
                 return new ApiRequestResultModel<T>
                 {
@@ -286,6 +286,18 @@ namespace CWBOpenData.Helpers
                     ResponseText = responseText
                 };
             }
+        }
+
+        private static T ConvertToModel<T>(string json)
+        {
+            var options = new JsonSerializerOptions
+            {
+                // 設定在做序列化/反序列化時，尊重名稱大小寫
+                PropertyNameCaseInsensitive = true
+            };
+            T convert = JsonSerializer.Deserialize<T>(json, options);
+
+            return convert;
         }
 
         private static CookieCollection ClonePreviousCookies(HttpWebRequest httpRequest, HttpWebResponse httpResponse)

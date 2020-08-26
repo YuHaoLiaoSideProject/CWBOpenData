@@ -6,11 +6,11 @@ namespace CWBOpenData.Helpers.APIRequest
 {
     public class WebRequestHelper
     {
-        WebRequestParamHelper helper = null;
+        WebRequestParamHelper _Param = null;
 
         public WebRequestHelper(string baseUrl, string apiUrl)
         {
-            helper = new WebRequestParamHelper(baseUrl, apiUrl);
+            _Param = new WebRequestParamHelper(baseUrl, apiUrl);
         }
         /// <summary>
         /// Static 設定Request
@@ -28,34 +28,41 @@ namespace CWBOpenData.Helpers.APIRequest
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public WebRequestHelper Get(Action<WebRequestParamHelper> action = null)
+        public WebRequestResponseHelper Get(Action<WebRequestParamHelper> action)
         {
             SetHttpRequest(HttpMethodType.HttpGet, action);
-            return this;
+            return new WebRequestResponseHelper(_Param);
         }
         /// <summary>
         /// Post方法
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public WebRequestHelper Post(Action<WebRequestParamHelper> action = null)
+        public WebRequestResponseHelper Post(Action<WebRequestParamHelper> action = null)
         {
             SetHttpRequest(HttpMethodType.HttpPost, action);
-            return this;
+            return new WebRequestResponseHelper(_Param);
         }
         private void SetHttpRequest(HttpMethodType method, Action<WebRequestParamHelper> action = null)
         {
-            helper.SetHttpMethod(method);
+            _Param.SetHttpMethod(method);
             if (action != null)
             {
-                action(helper);
+                action(_Param);
             }
         }
+    }
 
+    public class WebRequestResponseHelper
+    {
+        WebRequestParamHelper _helper = null;
+        public WebRequestResponseHelper(WebRequestParamHelper helper)
+        {
+            _helper = helper;
+        }
         public T Response<T>()
         {
-            return APIRequestHelper.RequestApi<T>(helper.GetParameters(), helper.GetPostBodyModel());
+            return APIRequestHelper.RequestApi<T>(_helper.GetParameters(), _helper.GetPostBodyModel());
         }
-
     }
 }
