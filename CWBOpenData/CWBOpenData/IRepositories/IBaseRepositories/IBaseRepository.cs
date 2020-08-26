@@ -11,6 +11,8 @@ namespace CWBOpenData.IRepositories.IBaseRepositories
 
         bool Create(List<T> models);
 
+        S CreateAndResultIdentity<S>(T model);
+
         void Update(List<T> models);
 
         bool Update(T model);

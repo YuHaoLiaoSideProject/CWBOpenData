@@ -68,6 +68,8 @@
   <ItemGroup>
     <Build Include="Security\yuhaoliao.sql" />
     <Build Include="dbo\Tables\Location.sql" />
+    <Build Include="dbo\Tables\WeatherForecastDetail.sql" />
+    <Build Include="dbo\Tables\WeatherForecast.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\CWBDB_20200826_18-46-19.dacpac" />

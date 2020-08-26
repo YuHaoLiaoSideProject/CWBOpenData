@@ -38,7 +38,9 @@ namespace CWBOpenData
             services.AddScoped<ICWBAPIService, CWBAPIService>();
             //Repository
             services.AddScoped<ILocationRepository, LocationRepository>();
-            
+            services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+            services.AddScoped<IWeatherForecastDetailRepository, WeatherForecastDetailRepository>();
+
             services.AddControllers();
         }
 

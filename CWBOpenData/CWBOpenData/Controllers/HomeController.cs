@@ -23,5 +23,11 @@ namespace CWBOpenData.Controllers
             var result = _CWBAPIService.GetWeatherForecastTo36Hour();
             return Json(result);
         }
+
+        public IActionResult Create()
+        {
+            _CWBAPIService.CreateWeatherForecastTo36Hour();
+            return Ok();
+        }
     }
 }
