@@ -27,6 +27,8 @@ namespace CWBOpenData
         {
             services.Configure<ConnectionStringConfig>(Configuration.GetSection("ConnectionStrings"));
 
+            services.Configure<CWBSettingConfig>(Configuration.GetSection("CWB"));
+
             services.AddMvc();
 
             services.AddMvcCore();
