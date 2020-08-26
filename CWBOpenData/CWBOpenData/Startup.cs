@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CWBOpenData.ConfigModels;
+using CWBOpenData.IRepositories;
+using CWBOpenData.Repositories;
 using CWBOpenData.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,8 +34,10 @@ namespace CWBOpenData
             services.AddMvc();
 
             services.AddMvcCore();
-
+            //Service
             services.AddScoped<ICWBAPIService, CWBAPIService>();
+            //Repository
+            services.AddScoped<ILocationRepository, LocationRepository>();
             
             services.AddControllers();
         }
