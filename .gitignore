@@ -1,6 +1,4 @@
-CWBOpenData/CWBOpenData/wwwroot/
-CWBOpenData/CWBOpenData/obj/
-CWBOpenData/CWBOpenData/bin
-CWBOpenData/CWBDB/obj/
-CWBOpenData/CWBDB/bin/
-CWBOpenData/.vs/CWBOpenData/v16
+*.dll
+**/.vs/
+**/bin/
+**/obj
