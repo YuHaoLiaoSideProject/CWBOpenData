@@ -6,6 +6,7 @@ using Dapper;
 using System.Text;
 using CWBOpenData.Utility;
 using CWBOpenData.Extensions;
+using System.Transactions;
 
 namespace CWBOpenData.Repositories.BaseRepositories
 {
@@ -228,7 +229,42 @@ ELSE
                 return conn.Execute(sql, models) == 1;
             }
         }
+        /// <summary>
+        /// 新增多筆
+        /// </summary>
+        public bool CreateBySqlBulkCopy(List<T> models)
+        {
+            var pagesize = 500000;
+            var pageCount = models.Count / pagesize;
+            pageCount = models.Count % pagesize == 0 ? pageCount : pageCount + 1;
 
+            for (int page = 1; page <= pageCount; page++)
+            {
+                using (var tx = new TransactionScope())
+                {
+                    using (var conn = new SqlConnection(_connectionString))
+                    {
+                        conn.Open();
+
+                        var dt = models
+                            .Skip(pagesize * (page - 1))
+                            .Take(pagesize)
+                            .ToDataTable();
+
+                        using (var sqlBulkCopy = new SqlBulkCopy(conn))
+                        {
+                            sqlBulkCopy.BatchSize = 100000;
+                            sqlBulkCopy.DestinationTableName = _tableName;
+                            sqlBulkCopy.WriteToServer(dt);
+                        }
+                    }
+                    tx.Complete();
+                }
+            }
+
+            return true;
+
+        }
         public bool Update(T model)
         {
             var sql = SQLUtility.GetUpdateCommand<T>(_tableName);
